@@ -1,0 +1,8 @@
+CODES SEGMENT
+    ASSUME CS: CODES
+    START:
+        MOV  [SI], 100H
+        MOV  AX, [SI]
+        CBW
+CODES ENDS
+    END START
