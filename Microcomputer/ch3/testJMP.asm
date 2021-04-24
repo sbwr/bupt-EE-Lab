@@ -12,9 +12,11 @@ start:
         jmp lp
         mov cx, 100
         lea si, array
-        lp: inc word ptr [si]
+        lp: 
+        ; inc word ptr [si]
         inc si
         inc si
+        mov ax, cx
         loop lp
     ;------------------end of program--------------
 

@@ -1,4 +1,5 @@
 ; 测试MOV等传送类指令
+.386 ; 使用伪指令指明处理器类型为80386
 .model small
 .stack 100h
 .data
@@ -12,8 +13,8 @@ mov ax, 0FFFFh
 mov bl, 0aah
 
 ; =====80386的指令 16位机不支持=======
-; movsx ax, bl
-; movzx cx, bl
+movsx ax, bl
+movzx cx, bl
 
 ; =====push/pop======
 push ax
