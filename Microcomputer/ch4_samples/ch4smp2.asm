@@ -1,4 +1,4 @@
-;强制转换类型smp
+    ;强制转换类型smp
 ;表达式赋值伪指令smp
 .model small
 .stack 100h             ;定义堆栈段
