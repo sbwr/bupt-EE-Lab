@@ -15,6 +15,8 @@ start:
     cmp bx, ax  ; dst < src 时cf=1
     cmp bx, 0   ; dst, src 操作数相等时cf=0, zf=1
 
+    ; exit
+    ; 不知道发生了什么反正这样正常退出了
     MOV	AH,4CH
 	INT 21H
 end start

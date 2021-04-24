@@ -3,7 +3,7 @@
 mov  r1, #0
 mov  r0, #0
 mov  r3, #0
-mov  r2, #0xFFFFFFFF
+mov  r2, #0xF
 
 LOOP:
     bl  add64       ; 完成一次加法
@@ -15,6 +15,7 @@ LOOP:
 nop
 nop
 nop
+swi 0x123456        ; 使用软中断结束执行
 
 ; 64位加法 r1r2 + r3r4
 ; r1r2为计算结果
@@ -22,3 +23,5 @@ add64:
     adds r0, r0, r2
     adc  r1, r1, r3
     mov  pc, lr     ; 子程序结束，回到主程序
+
+.end
