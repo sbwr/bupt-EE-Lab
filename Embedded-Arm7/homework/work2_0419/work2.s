@@ -17,8 +17,8 @@ nop
 nop
 swi 0x123456        ; 使用软中断结束执行
 
-; 64位加法 r1r2 + r3r4
-; r1r2为计算结果
+; 64位加法 r1r0 + r3r2
+; 结果记录在r1r2
 add64:
     adds r0, r0, r2
     adc  r1, r1, r3
