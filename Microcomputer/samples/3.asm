@@ -1,6 +1,6 @@
 DATA SEGMENT
 	STR		db	'hahahahaaastop',0
-	SUBSTR1	db	'abs',0			;substr是保留关键字 
+	SUBSTR1	db	'ast',0			;substr是保留关键字 
 	FOUND	db	0
 	POS		dw	-1
 DATA ENDS
