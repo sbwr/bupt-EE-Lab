@@ -1,19 +1,14 @@
-; 把字符串String两端的空格删除（字符串以0结束）。（提示：空格可能是多个）
+; 假设从变量buff开始存放了200个字，编写一个程序统计出其正数、0和负数的个数，并把它们分别存入n1、n2和n3中。
 .model small
 .stack 100h
 .data                           ; 定义数据段
-string db "  abc0 "             ; 数据段中存入字符串
-strlen db 7                     ; 字符串长度
+BUFF DW 102 DUP(1),54 DUP(0),44 DUP(-1) 
 .const                          ; 定义常数段（可选）
 .code                           ; 定义代码段
 start:
 main proc far
     mov ax, @data
     mov ds, ax
-    mov es, ax
-    lea si,string               ; 注意要初始化es，es:di才是有意义的
-    lea di,string+7
-    ; mov byte ptr [si+1],'$' ;字符串末尾加上结束符
 
     head: ; =========寻找字符串头部的空格==========
         mov ah,[si]             ; 将偏移量为si的值赋给ah
@@ -39,7 +34,7 @@ main proc far
 
     exit: ; ============退出程序============
         mov si,bx               ; 将新的起始位置赋给si
-        mov	ah,4ch
-        int 21h
+        MOV	AH,4CH
+        INT 21H
 main endp    
 end start
