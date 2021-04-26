@@ -3,7 +3,7 @@
 mov  r1, #0
 mov  r0, #0
 mov  r3, #0
-mov  r2, #0xF
+mov  r2, #0xFFFFFFFF
 
 LOOP:
     bl  add64       ; 完成一次加法
