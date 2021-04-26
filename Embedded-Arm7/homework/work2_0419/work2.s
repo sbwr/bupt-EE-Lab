@@ -3,7 +3,7 @@
 mov  r1, #0
 mov  r0, #0
 mov  r3, #0
-mov  r2, #0xFFFFFFFF
+mov  r2, #0xF
 
 LOOP:
     bl  add64       ; 完成一次加法
@@ -12,10 +12,7 @@ LOOP:
     bne LOOP        ; 条件跳转, 看CPSR标志位
 
 ; 结束程序
-nop
-nop
-nop
-swi 0x123456        ; 使用软中断结束执行
+swi 0x11            ; 使用软中断结束执行
 
 ; 64位加法 r1r0 + r3r2
 ; 结果记录在r1r2
