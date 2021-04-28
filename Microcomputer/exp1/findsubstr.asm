@@ -1,6 +1,7 @@
 ; 推荐使用vscode查看
-
-
+.model small
+.stack 100h
+.data
 ; ==============定义字符串和子串变量===============
 mystr       db 'abcdefgabcdefg',0
 mysubstr    db 'ab',0
