@@ -11,8 +11,8 @@ main proc far
     mov ax, @data
     mov ds, ax
     mov es, ax
-    lea si,string               ; 注意要初始化es，es:di才是有意义的
-    lea di,string+7
+    lea si, string              ; 注意要初始化es，es:di才是有意义的
+    lea di, string+7
     ; mov byte ptr [si+1],'$' ;字符串末尾加上结束符
 
     head: ; =========寻找字符串头部的空格==========
@@ -27,19 +27,24 @@ main proc far
         jmp head
 
     rear: ; =========寻找字符串尾部的空格==========
+        dec di                  ; 偏移量递减
         mov ah,[di]             ; 将偏移量为si的值赋给ah
-        dec di                  ; 偏移量递增
         cmp ah, ' '             ; 
         jz  moverear            ; 找到空格则zf=1，在moverear中改变结尾位置
         jnz exit                ; 尾部空格全部找到，结束
 
     moverear: ; =======改变字符串末尾位置，' '->'0'=======
-        mov byte ptr [di],'0'
+        ; mov byte ptr [di],'0'
+        mov byte ptr [di],'$'
         jmp rear
 
-    exit: ; ============退出程序============
-        mov si,bx               ; 将新的起始位置赋给si
-        mov	ah,4ch
+    exit: ; ============显示字符串并退出程序============
+        ; 显示字符串
+        mov dx, bx
+        mov ah, 9h              ; 九号中断，显示字符串
+        int 21h
+
+        mov	ah, 4ch
         int 21h
 main endp    
 end start

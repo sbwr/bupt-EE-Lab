@@ -2,11 +2,13 @@
 .model small
 .stack 100h
 .data
-; 定义字符串和子串变量
+; ==============定义字符串和子串变量===============
 mystr       db 'abcdefgabcdefg',0
-mysubstr    db 'gab',0
+mysubstr    db 'ab',0
 found       db 0
 pos         dw -1
+strmaxlen   dw 200h                             ; 字符串长度上限
+submaxlen   dw 80h                              ; 子串长度上限
 .const
 .code
 start:
@@ -15,8 +17,11 @@ main proc far
     mov ds, ax
     lea si, mystr
     lea di, mysubstr
+    dec strmaxlen                               ; 与si计数统一
 
     strend: ; =========判断是否到mystr尾部========
+        cmp si, strmaxlen                       
+        jz  false                                ; 若si > 字符串长度上限
         mov al, [si]
         cmp al, 0
         jz  false
@@ -39,6 +44,8 @@ main proc far
         cmp al, 0
         jz  true                                ; substr结束，已找到完整子串
         inc si                                  ; substr未结束，继续判断str下一位
+        cmp di, submaxlen                       ; 判断是否到长度上限
+        jz  true                                ; 已到达上限，强制结束比较
         jmp strend
 
     restart: ; =====重新从substr第一位开始比较=====
@@ -52,6 +59,9 @@ main proc far
 
     true: ; ============已找到子串===============
         mov found, 0ffh
+        mov dx, found
+        mov ah, 9h
+        int 21h
         jmp exit
 
     false: ; =========遍历完str且未找到===========
@@ -59,8 +69,8 @@ main proc far
         jmp exit
 
     exit: ; ==============退出程序===============
-        MOV	AH,4CH
-        INT 21H
+        mov ah, 4ch
+        int 21h
 
 main endp    
 end start
