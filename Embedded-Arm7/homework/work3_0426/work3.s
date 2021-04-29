@@ -10,7 +10,7 @@
     mov r4, #43         ; 记录循环次数
 
 traverse: ; 遍历OrgArray
-    sub r4, r4, #1
+    subs r4, r4, #1
     beq exit
     ldr r0, [r1]
     add r1, r1, #4      ; r1增加至数组下一元素
