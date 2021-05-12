@@ -5,11 +5,12 @@ data ends
 code segment
  assume cs:code,ds:data
 start:
+; 
  mov ax,data
  mov ds,ax
  mov bx,0
  mov dx,0
- mov cx,N
+ mov cx,N ; 循环N次
 L1: ;------------ 外层循环，
 ; 先入栈寄存器，保护现场，以便内层循环使用寄存器
  push cx
@@ -22,6 +23,7 @@ L2:
  ;  大于则交换数值
  xchg ax,buf[bx+2]
  mov buf[si],ax
+
 NEXT:
  add bx,2
  loop L2
@@ -29,10 +31,10 @@ NEXT:
  pop cx
  add bx,2
  loop L1
- 
+
 ;  显示排序后数组
 
  mov ax,4c00h
  int 21h
-code ends
+ code ends
  end start
