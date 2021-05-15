@@ -1,4 +1,3 @@
-;https://www.cnblogs.com/lucio_yz/p/4418066.html
 DATAS SEGMENT
 COUNT DW 20
 BEGINC DW 0
@@ -7,7 +6,7 @@ Y DB 5,9,7,3,1,6,3,5,4,0,0,1,3,7,2,5,4,5,3,1
 Z DB 20 DUP(?)
 ENT db ';',0ah,0dh,'$'
 DATAS ENDS
-
+; 将两个数组X、Y进行从小到大的快速排序后，将两个数组相同的元素按照从大到小的顺序输出到Z中。
 STACKS SEGMENT
     ;此处输入堆栈段代码
 STACKS ENDS
@@ -174,11 +173,12 @@ SWAP2:;A[I]=A[J]
     MOV [BX],AH
     JMP AG;一趟完成，循环
 QUIT:
-    MOV AX,DI;中轴地址给Ax
+    MOV AX,DI;中轴地址给AX
     RET
 PARTITION ENDP
 
 SHOW PROC NEAR
+    LP:
     XOR AL,AL
     ADD AL,[SI]
     ADD AL,'0'
@@ -187,7 +187,7 @@ SHOW PROC NEAR
     CALL OUTPUT
     MOV DL,' ';输出空格
     CALL OUTPUT
-    LOOP AG;循环
+    LOOP LP;循环
     RET
 SHOW ENDP 
 
