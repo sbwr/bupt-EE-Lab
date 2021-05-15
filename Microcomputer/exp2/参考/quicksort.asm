@@ -3,8 +3,11 @@
 .model small
 .data
     buf db 0ABH,0FH,4CH,3DH,7AH,0E0H,0FFH,11H,8H,88H,0ABH,0FH,4CH,3DH,7AH,0E0H,0FFH,11H,8H,88H
+        db 0ABH,0FH,4CH,3DH,7AH,0E0H,0FFH,11H,8H,88H,0ABH,0FH,4CH,3DH,7AH,0E0H,0FFH,11H,8H,88H
     N=$-buf                                                         ; 计算数组长度
-    LAST=N-1
+    LAST=N-1                                                        ; 最后一位数字的位置
+    BEFORE db 'BEFORE SORT',0AH,'$'
+    AFTER db 'AFTER SORT',0AH,'$'
 .stack
 .code
     start: 
@@ -12,6 +15,10 @@
     MOV AX, @DATA
     MOV DS, AX
     ; ------------------------- 显示原数组 --------------------------
+    MOV DX, OFFSET BEFORE
+    MOV AH, 09H
+    INT 21H
+
     MOV SI, OFFSET BUF
     MOV CX, N
     CALL SHOW
@@ -22,6 +29,9 @@
     DEC BX
     CALL QSORT
     ; ------------------------ 显示排序后数组 ------------------------
+    MOV DX, OFFSET AFTER
+    MOV AH, 09H
+    INT 21H
     MOV SI, OFFSET BUF
     MOV CX, N
     CALL SHOW
@@ -29,7 +39,7 @@
     JMP EXIT
 
 ; ================================ 函数 ==============================
-    ; -------------------------- 快速排序 --------------------------
+    ; -------------- 快速排序, 将数组从无序变为完全有序 ----------------
     QSORT PROC NEAR
         PUSH DI     ; 保存左右初值，使函数结束时能够恢复现场
         PUSH BX
@@ -64,7 +74,7 @@
         MOV DL,[DI]     ;DL中存放基准值，即为key
     AG: 
         CMP DI,BX;while left<right
-        JGE QUIT;DI>=BX
+        JGE QUIT_QSORT;DI>=BX
 
     S: ; 在右侧寻找<key数，
         CMP DI,BX;left<right
@@ -89,7 +99,7 @@
         
         ;一趟完成，循环
         JMP AG
-    QUIT:
+    QUIT_QSORT:
         MOV [DI],DL;插入基准值
         MOV AX,DI;最后插入基准值的地址赋给AX
         POP BX
@@ -97,8 +107,8 @@
         RET
     PARTITION ENDP
 
+    ; -------------------- 显示控制, 每行显示十个数 -------------------
     ; 显示输出并以回车结尾，SI指向要显示的数组，用CX输入数组大小
-    ; 每行显示十个数
     SHOW PROC NEAR
         ; PUSH AL BUG: 不可以push字节
         PUSH SI
@@ -142,7 +152,7 @@
         RET
     SHOW ENDP 
 
-    ; 以字符形式显示输出两位16进制数，输出内容放在DL中
+    ; 以字符格式显示输出两位16进制数，输出内容放在DL中
     PRINT PROC NEAR
         PUSH BX
         ; 先显示高四位，即DL右移四位后显示
@@ -186,7 +196,6 @@
         POP BX
         RET
     PRINT ENDP
-
 
     EXIT:
     mov ax,4c00h
