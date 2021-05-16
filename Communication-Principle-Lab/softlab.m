@@ -6,7 +6,6 @@ L = 16;
 M = N / L;
 Rs = 2;
 Ts = 1 / Rs;
-t = -10 * Ts : Ts / N : 10 * Ts;
 fs = L / Ts;
 Bs = fs / 2;
 T = N / fs;
@@ -14,7 +13,8 @@ T = N / fs;
 t = - T/2 + [0 : N - 1] / fs;
 f = - Bs + [0 : N - 1] / T;
 
-alpha = 0.25;
+% 生成升余弦波
+alpha = 0;  % 滚降系数α
 Hcos = zeros(1, N);
 ii = find(abs(f) > (1 - alpha) / (2 * Ts) & abs(f) <= (1 + alpha) / (2 * Ts));
 Hcos(ii) = Ts / 2 * (1 + cos(pi * Ts / alpha * (abs(f(ii)) - (1 - alpha) / (2 * Ts))));
@@ -22,6 +22,8 @@ ii = find(abs(f) <= (1 - alpha) / (2 * Ts));
 Hcos(ii) = Ts;
 
 Hrcos = sqrt(Hcos);
+
+
 
 xt = sinc(t / Ts).*(cos(alpha * pi * t / Ts)) ./ (1 - 4 * alpha ^ 2 * t .^2 / Ts ^ 2 + eps);
 
@@ -70,7 +72,7 @@ function S = t2f(s,fs)
     tmp2 = N * ifft(s) / fs;
     S(1 : N/2) = tmp2(N/2 + 1 : -1 : 2);
     S(N/2 + 1 : N) = tmp1(1 : N/2);
-    S = S .* exp(j * pi * f * T);
+    S = S .* exp(1i * pi * f * T);
 end
 
 function s = f2t(S, fs)
@@ -81,5 +83,5 @@ function s = f2t(S, fs)
     tmp2 = N * ifft(S) / T;
     s(1 : N / 2)=tmp1(N/2 + 1 : -1 : 2);
     s(N/2 + 1 : N) = tmp2(1 : N/2);
-    s = s .* exp(-j * pi * t * fs);
+    s = s .* exp(-1i * pi * t * fs);
 end
